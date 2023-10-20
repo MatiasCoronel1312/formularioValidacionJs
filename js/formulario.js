@@ -9,6 +9,13 @@ const expresiones = {
     email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
     telefono: /^\d{7,14}$/ // 7 a 14 digitos.
 }
+const campos = {
+    usuario: false,
+    nombre: false,
+    password: false,
+    email: false,
+    telefono: false
+}
 const validarFormulario = (e) => {
     switch (e.target.name) {
         case "usuario":
@@ -40,13 +47,14 @@ const validarCampo = (expresion, input, campo) => {
         document.querySelector(`#grupo__${campo} i`).classList.remove('fa-circle-xmark');
         document.querySelector(`#grupo__${campo} i`).classList.add('fa-circle-check');
         document.querySelector(`#grupo__${campo} .formulario__input-error`).classList.remove('formulario__input-error-activo');
-        
+        campos[campo] = true;
     }else {
         document.getElementById(`grupo__${campo}`).classList.add('formulario__grupo-incorrecto');
         document.getElementById(`grupo__${campo}`).classList.remove('formulario__grupo-correcto');
         document.querySelector(`#grupo__${campo} i`).classList.add('fa-circle-xmark');
         document.querySelector(`#grupo__${campo} i`).classList.remove('fa-circle-check');
         document.querySelector(`#grupo__${campo} .formulario__input-error`).classList.add('formulario__input-error-activo');
+        campos[campo] = false;
     }
 }
 
@@ -60,13 +68,14 @@ function validarPassword2() {
         document.querySelector(`#grupo__password2 i`).classList.remove('fa-circle-xmark');
         document.querySelector(`#grupo__password2 i`).classList.add('fa-circle-check');
         document.querySelector(`#grupo__password2 .formulario__input-error`).classList.remove('formulario__input-error-activo');
-        
+        campos['password'] = true;
     }else {
         document.getElementById(`grupo__password2`).classList.add('formulario__grupo-incorrecto');
         document.getElementById(`grupo__password2`).classList.remove('formulario__grupo-correcto');
         document.querySelector(`#grupo__password2 i`).classList.add('fa-circle-xmark');
         document.querySelector(`#grupo__password2 i`).classList.remove('fa-circle-check');
         document.querySelector(`#grupo__password2 .formulario__input-error`).classList.add('formulario__input-error-activo');
+        campos['password'] = false;
     }
 }
 
@@ -77,5 +86,24 @@ inputs.forEach((input) => {
 
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
+
+        const terminos = document.getElementById('terminos');
+    if(campos.usuario && campos.nombre && campos.password && campos.email && campos.telefono && terminos.checked){
+        formulario.reset();
+
+        document.getElementById('formulario__mensaje-exito').classList.add('formulario__mensaje-exito-activo');
+        setTimeout(() => {
+            document.getElementById('formulario__mensaje-exito').classList.remove('formulario__mensaje-exito-activo');
+        }, 3000)
+        document.querySelectorAll(".formulario__grupo-correcto").forEach((icono) => { 
+            icono.classList.remove('formulario__grupo-correcto');
+        });
+        
+    }else {
+        document.getElementById('formulario__mensaje').classList.add('formulario__mensaje-activo');
+        setTimeout(() => {
+            document.getElementById('formulario__mensaje').classList.remove('formulario__mensaje-activo');
+        }, 3000)
+    }
 });
 

@@ -77,6 +77,9 @@ main {
 .formulario__mensaje p {
     margin: 0;
 }
+.formulario__mensaje-activo {
+    display: block;
+}
 .formulario__grupo-btn-enviar {
     display: flex;
     flex-direction: column;
